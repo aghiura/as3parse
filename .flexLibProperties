@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="true" version="3">
-  <includeClasses/>
+  <includeClasses>
+    <classEntry path="org.parse.Parse"/>
+    <classEntry path="org.parse.ParseObject"/>
+    <classEntry path="org.parse.ParseEvent"/>
+    <classEntry path="org.parse.ParseConfig"/>
+    <classEntry path="org.parse.ParseArrayCollection"/>
+  </includeClasses>
   <includeResources/>
   <namespaceManifests/>
 </flexLibProperties>

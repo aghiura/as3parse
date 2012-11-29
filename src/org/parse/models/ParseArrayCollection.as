@@ -1,8 +1,9 @@
-package org.parse
+package org.parse.models
 {
 	import flash.utils.getQualifiedClassName;
 	
 	import mx.collections.ArrayCollection;
+	import org.parse.Parse;
 
 	public class ParseArrayCollection extends ArrayCollection
 	{

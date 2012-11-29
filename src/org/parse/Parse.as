@@ -21,6 +21,14 @@ package org.parse
 		{
 		}
 		
+		/**
+		 * Create an object.
+		 * 
+		 * @param className
+		 * @param object
+		 * @param options
+		 * 
+		 **/
 		public function createObject( className:String, object:Object, options:Object ):void
 		{
 			var request :URLRequest = null;
@@ -50,11 +58,78 @@ package org.parse
 			loader.load( request );
 		}
 		
-		public function readObject( className:String, objectId:String, options:Object ):void
+		public function updateObject( className:String, object :Object, options:Object ):void
 		{
+			var request :URLRequest = null;
 			
+			request = new URLRequest( PARSE_API + className + "/" + object.objectId );
+			request.method = URLRequestMethod.PUT;
+			request.contentType = CONTENT_TYPE;
+			request.data = JSON.stringify( object );
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-Application-Id", CONFIG.applicationId) );
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-REST-API-Key", CONFIG.apiKey) );
+			
+			if ( !loader )
+				loader = new URLLoader();
+			
+			loader.addEventListener(
+				Event.COMPLETE,
+				function( event:Event ):void
+				{
+					var result :Object =  JSON.parse( event.target.data );
+					
+					if( options && options.success )
+						options.success.call( null, result );
+					
+				}
+			);
+			
+			loader.load( request );
 		}
 		
+		/**
+		 * Read object information by id.
+		 * 
+		 * @param className
+		 * @param objectId
+		 * @param options
+		 *
+		 **/
+		public function readObject( className:String, objectId:String, options:Object ):void
+		{
+			var request :URLRequest = null;
+			
+			request = new URLRequest( PARSE_API + className + "/" + objectId );
+			request.method = URLRequestMethod.GET;
+			request.contentType = CONTENT_TYPE;
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-Application-Id", CONFIG.applicationId) );
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-REST-API-Key", CONFIG.apiKey) );
+			
+			if ( !loader )
+				loader = new URLLoader();
+			
+			loader.addEventListener(
+				Event.COMPLETE,
+				function( event:Event ):void
+				{
+					var result :Object =  JSON.parse( event.target.data );
+					
+					if( options && options.success )
+						options.success.call( null, result );
+					
+				}
+			);
+			
+			loader.load( request );
+		}
+		
+		/**
+		 * Read all objects
+		 * 
+		 * @param className
+		 * @param options
+		 * 
+		 **/
 		public function readObjects( className:String, options:Object ):void
 		{
 			var request :URLRequest = null;

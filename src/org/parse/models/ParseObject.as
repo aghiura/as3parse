@@ -1,15 +1,20 @@
-package org.parse
+package org.parse.models
 {
+	import flash.events.EventDispatcher;
 	import flash.utils.getQualifiedClassName;
+	import org.parse.Parse;
 
-	public class ParseObject
+	public class ParseObject extends EventDispatcher
 	{		
+		// Vars
 		protected var className: String = "";
 		protected var isNew :Boolean = true;
 		
 		private var _objectId: String = "";
 		private var _createdAt: String = "";
+		private var _updatedAt: String = "";
 		
+		// Constructor
 		public function ParseObject( other:Object = null )
 		{
 			className = getQualifiedClassName( this ).split("::").pop();
@@ -18,6 +23,7 @@ package org.parse
 				parse( other );
 		}
 		
+		// Public functions
 		public function get objectId():String
 		{
 			return _objectId;
@@ -25,13 +31,28 @@ package org.parse
 		
 		public function save( options:Object ):void
 		{
-			sync( "create", options );
+			if( isNew && _objectId == "" )
+				sync( "create", options );
+			else
+				sync( "update", options );
 		}
 		
+		public function load( options:Object ):void
+		{
+			sync( "read", options );
+		}
+		
+		public function toObject():Object
+		{
+			return JSON.parse( JSON.stringify( this ));
+		}
+		
+		// Protected functions
 		protected function parse( json:Object ):void
 		{
 			this._objectId = json.objectId;
 			this._createdAt = json.createdAt;
+			this._updatedAt = json.updatedAt;
 			
 			if( this._objectId )
 				this.isNew = false;
@@ -66,7 +87,21 @@ package org.parse
 					});
 					break;
 				}
-					
+				
+				case "update":
+				{
+					parse.updateObject( className, this.toObject(), {
+						success: function( data:Object ):void
+						{
+							self._updatedAt = data.updatedAt;
+							
+							if( options && options.success )
+								options.success.call( self );
+						}
+					});
+					break;
+				}
+
 				case "read":
 				{
 					parse.readObject( className, objectId, {
@@ -84,11 +119,6 @@ package org.parse
 					break;
 				}
 			}
-		}
-		
-		public function toObject():Object
-		{
-			return JSON.parse( JSON.stringify( this ));
 		}
 	}
 }

@@ -8,8 +8,7 @@ Example:
 
 Custom model:
 
-`
-public class GameScore extends ParseObject
+`public class GameScore extends ParseObject
 {
 	public var score :Number = 0;
 	public var playerName :String = "";
@@ -26,12 +25,11 @@ public class GameScore extends ParseObject
 
 		super.parse( json );
 	}
-}
-`
+}`
 
 Create example:
-`
-Parse.CONFIG.applicationId = ".......";
+
+`Parse.CONFIG.applicationId = ".......";
 Parse.CONFIG.apiKey = "....";
 
 var gameScore :GameScore = new GameScore({
@@ -44,5 +42,4 @@ gameScore.save({
 	{
 		console.log( gameScore.objectId() );
 	}
-})
-`
+})`

@@ -27,7 +27,7 @@ Custom model:
 		}
 	}
 
-Create example:
+**CREATE example**:
 
 	Parse.CONFIG.applicationId = ".......";
 	Parse.CONFIG.apiKey = "....";
@@ -43,3 +43,24 @@ Create example:
 			console.log( gameScore.objectId() );
 		}
 	})
+	
+**READ example**
+
+	var gameScore :GameScore = new GameScore({
+		objectId: "Kdfffasdf"
+	});
+	
+	gameScore.load({
+		success: function() {
+			// here we have gameScore loaded from Parse
+		}
+	});
+
+**LOAD multiple objects**
+
+	var gameScores :ParseArrayCollection = new ParseArrayCollection( GameScore ); 
+	gameScores.load({
+		success: function():void {
+			// Here gameScores has a list of GameScores objects
+		}
+	});

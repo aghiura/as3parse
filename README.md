@@ -43,6 +43,16 @@ Custom model:
 			console.log( gameScore.objectId() );
 		}
 	})
+
+**UPDATE example**:
+
+	var gameScore :GameScore = new GameScore({
+		objectId: "Kdfffasdf"
+	});
+	
+	gameScore.playerName = "NewName";
+	gameScore.save(); // Because it has an objectId the save() function will make an update not create
+	
 	
 **READ example**:
 

@@ -66,6 +66,7 @@ Custom model:
 	});
 	
 **DELETE example**:
+	
 	var gameScore :GameScore = new GameScore({
 		objectId: "7B5gsbk6pb"
 	});

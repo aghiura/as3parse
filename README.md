@@ -44,7 +44,7 @@ Custom model:
 		}
 	})
 	
-**READ example**
+**READ example**:
 
 	var gameScore :GameScore = new GameScore({
 		objectId: "Kdfffasdf"
@@ -56,7 +56,7 @@ Custom model:
 		}
 	});
 
-**LOAD multiple objects**
+**LOAD multiple objects example**:
 
 	var gameScores :ParseArrayCollection = new ParseArrayCollection( GameScore ); 
 	gameScores.load({
@@ -64,3 +64,10 @@ Custom model:
 			// Here gameScores has a list of GameScores objects
 		}
 	});
+	
+**DELETE example**:
+	var gameScore :GameScore = new GameScore({
+		objectId: "7B5gsbk6pb"
+	});
+	
+	gameScore.remove({ success: function():void { ...... }});

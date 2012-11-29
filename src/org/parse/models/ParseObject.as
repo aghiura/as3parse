@@ -2,6 +2,7 @@ package org.parse.models
 {
 	import flash.events.EventDispatcher;
 	import flash.utils.getQualifiedClassName;
+	
 	import org.parse.Parse;
 
 	public class ParseObject extends EventDispatcher
@@ -40,6 +41,11 @@ package org.parse.models
 		public function load( options:Object ):void
 		{
 			sync( "read", options );
+		}
+		
+		public function remove( options:Object ):void
+		{
+			sync( "delete", options );
 		}
 		
 		public function toObject():Object
@@ -114,6 +120,24 @@ package org.parse.models
 								if( options && options.success )
 									options.success.call( self );
 							}
+						}
+					});
+					break;
+				}
+					
+				case "delete":
+				{
+					parse.deleteObject( className, objectId, {
+						success: function( data:Object ):void {
+							
+							if( options && options.success )
+								options.success.call( self );
+						},
+						
+						error: function( msg:String ):void
+						{
+							if( options && options.error )
+								options.error.call( self, msg );
 						}
 					});
 					break;

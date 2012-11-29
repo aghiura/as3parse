@@ -2,6 +2,7 @@ package org.parse
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
@@ -58,7 +59,7 @@ package org.parse
 			loader.load( request );
 		}
 		
-		public function updateObject( className:String, object :Object, options:Object ):void
+		public function updateObject( className:String, object:Object, options:Object ):void
 		{
 			var request :URLRequest = null;
 			
@@ -81,6 +82,42 @@ package org.parse
 					if( options && options.success )
 						options.success.call( null, result );
 					
+				}
+			);
+			
+			loader.load( request );
+		}
+		
+		public function deleteObject( className:String, objectId:String, options:Object ):void
+		{
+			var request :URLRequest = null;
+			
+			request = new URLRequest( PARSE_API + className + "/" + objectId );
+			request.method = URLRequestMethod.DELETE;
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-Application-Id", CONFIG.applicationId) );
+			request.requestHeaders.push( new URLRequestHeader("X-Parse-REST-API-Key", CONFIG.apiKey) );
+			
+			if ( !loader )
+				loader = new URLLoader();
+			
+			loader.addEventListener(
+				Event.COMPLETE,
+				function( event:Event ):void
+				{
+					var result :Object =  JSON.parse( event.target.data );
+					
+					if( options && options.success )
+						options.success.call( null, result );
+					
+				}
+			);
+			
+			loader.addEventListener(
+				IOErrorEvent.IO_ERROR,
+				function( event:Event ):void
+				{
+					if( options && options.error )
+						options.error.call( null, IOErrorEvent( event ).text );	
 				}
 			);
 			

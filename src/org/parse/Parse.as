@@ -37,7 +37,16 @@ package org.parse
 			request = new URLRequest( PARSE_API + className );
 			request.method = URLRequestMethod.POST;
 			request.contentType = CONTENT_TYPE;
-			request.data = JSON.stringify( object );
+			request.data = JSON.stringify(
+				object,
+				function(key, value):* {
+					if (key == "objectId") {
+						return undefined;
+					} else {
+						return value;
+					}
+				}
+			);
 			request.requestHeaders.push( new URLRequestHeader("X-Parse-Application-Id", CONFIG.applicationId) );
 			request.requestHeaders.push( new URLRequestHeader("X-Parse-REST-API-Key", CONFIG.apiKey) );
 			
